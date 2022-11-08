@@ -5,12 +5,10 @@ import {
 } from "react-router-dom"
 import './App.css';
 import Navigation from './Navbar';
-import Admin from './Admin';
 import Home from './Home';
 
 import { useState } from 'react'
 import { ethers } from 'ethers'
-import { Spinner } from 'react-bootstrap'
 
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
@@ -24,11 +22,8 @@ const toWei = (num) => ethers.utils.parseEther(num.toString())
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [items, setItems] = useState([])
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
-  const [token, setToken] = useState({})
-  const [allowance, setAllowance] = useState("")
 
   // MetaMask Login/Connect
   const web3Handler = async () => {
@@ -62,39 +57,25 @@ function App() {
     })
 
     setLoading(false)
-    setItems(items)
-    
-}
+  }
 
   const loadContracts = async (acc, signer) => {
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
-    const token = new ethers.Contract(TokenAddress.address, TokenAbi.abi, signer)
 
     setNFT(nft)
-    setToken(token)
-    let all = fromWei(await token.allowance(acc, nft.address))
-    setAllowance(all)
     setLoading(false)
     
     loadOpenSeaItems(acc, NFTAddress.address)
-
-    if (all != "900000.0") {
-      token.approve(nft.address, toWei(900000))
-    }
   }
 
   return (
     <BrowserRouter>
       <div className="App" id="wrapper">
-        {/* <Navigation web3Handler={web3Handler} account={account} /> */}
+        <Navigation />
         <Routes>
           <Route path="/" element={
-            <Home web3Handler={web3Handler} account={account} nft={nft} token={token} items={items} allowance={allowance}>
+            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300}>
               </Home>
-          } />
-          <Route path="/admin" element={
-            <Admin web3Handler={web3Handler} account={account} nft={nft} token={token} items={items}>
-              </Admin>
           } />
         </Routes>
       </div>

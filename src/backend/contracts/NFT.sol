@@ -9,10 +9,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract NFT is ERC721A, Ownable {
     string public uriPrefix = '';
     string public uriSuffix = '.json';
-    uint256 public max_supply = 10000;
-    uint256 public amountMintPerAccount = 10;
+    uint256 public max_supply = 5000;
+    uint256 public amountMintPerAccount = 1;
 
-    uint256 public price = 0.05 ether;
+    uint256 public price = 0 ether;
     
     event MintSuccessful(address user);
 
