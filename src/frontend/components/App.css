@@ -43,8 +43,10 @@ a:link, a:visited, a:hover, a:active {
   top : 10%;
   left : 25%;
   background-color: #fffde5;
-  border-width: 5px;
+  border-width: 2px;
+  border-style: solid;
   border-color: #6e5d5a;
+  border-radius: 10px;
   width: 50%;
   height: 70%;
   margin: auto;
