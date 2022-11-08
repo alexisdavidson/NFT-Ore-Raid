@@ -10,9 +10,8 @@ const Navigation = () => {
         <Navbar expand="lg" variant="dark">
             <Container>
                 <Navbar.Brand>
-                    <img src={logo} className="" alt="" />
+                    <img src={logo} className="logo" alt="" />
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             </Container>
         </Navbar>
     )

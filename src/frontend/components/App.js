@@ -12,10 +12,7 @@ import { ethers } from 'ethers'
 
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
-import TokenAbi from '../contractsData/Token.json'
-import TokenAddress from '../contractsData/Token-address.json'
 import configContract from './configContract';
-import rotate from './assets/rotate.png'
 
 const fromWei = (num) => ethers.utils.formatEther(num)
 const toWei = (num) => ethers.utils.parseEther(num.toString())
@@ -78,10 +75,6 @@ function App() {
               </Home>
           } />
         </Routes>
-      </div>
-      <div className="WarningMessage" id="warning-message">
-        Please use landscape mode!
-        <img src={rotate}  className="center mt-5"/>
       </div>
     </BrowserRouter>
   );

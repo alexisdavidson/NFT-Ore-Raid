@@ -22,9 +22,9 @@ const Home = ({ web3Handler, account, nft, ticketsLeft }) => {
 
     return (
         <div className="m-0 p-0 container-fluid">
-            <Row className="splashScreen my-3 p-3 container-fluid" style={{ fontSize: "4vh"}} >
-                <Row className="mx-auto mt-4">
-                    <h2>Else Exchange Ticket Free Mint</h2>
+            <Row className="splashScreen my-3 p-3 container-fluid">
+                <Row className="mx-auto mt-2 p-0">
+                    <h2 className="ticketTitle">Else Exchange Ticket Free Mint</h2>
                 </Row>
                 <Row className="mx-auto mt-4 mb-4">
                     <img className="ticketImage m-auto" src={ticket} />
@@ -38,7 +38,7 @@ const Home = ({ web3Handler, account, nft, ticketsLeft }) => {
                 <Row className="mx-auto mt-0 mb-2">
                     <div className="ticketText">0,00 ETH</div>
                 </Row>
-                <Row className="mx-auto mt-0 mb-5">
+                <Row className="mx-auto mt-0">
                     <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
                 </Row>
                 <Row className="mx-auto mt-0 mb-4">

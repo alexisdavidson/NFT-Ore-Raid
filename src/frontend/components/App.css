@@ -3,14 +3,6 @@
   src: url("./assets/TT Norms Pro Bold.otf");
 }
 
-@media only screen and (orientation:portrait){
-  #wrapper { display:none; }
-  #warning-message { display:block; }
-}
-@media only screen and (orientation:landscape){
-  #warning-message { display:none; }
-}
-
 body {
   height: 100vh;
 }
@@ -26,13 +18,6 @@ body {
   color: #302635;
 }
 
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
 a:link, a:visited, a:hover, a:active {
   color: white;
   text-decoration: none;
@@ -40,31 +25,66 @@ a:link, a:visited, a:hover, a:active {
 
 .splashScreen {
   position : fixed;
-  top : 10%;
-  left : 25%;
   background-color: #fffde5;
   border-width: 2px;
   border-style: solid;
   border-color: #6e5d5a;
   border-radius: 10px;
-  width: 50%;
-  height: 70%;
   margin: auto;
   padding: auto;
   font-size: 5vh;
   display: flex;
 }
 
+
+@media only screen and (orientation:portrait){
+  .splashScreen {
+    top : 15%;
+    left : 5%;
+    width: 90%;
+    height: 70%;
+  }
+
+  .ticketTitle {
+    font-size: 1.2rem;
+    padding: 0;
+  }
+  
+  .addressButton {
+    font-size: 0.6rem;
+    height: 1.7rem;
+  }
+
+  .logo {
+    position: absolute;
+    left: 50%;
+    margin-left: -140px !important;  /* 50% of your logo width */
+    display: block;
+  }
+}
+@media only screen and (orientation:landscape){
+  .splashScreen {
+    top : 10%;
+    left : 25%;
+    width: 50%;
+    height: 70%;
+  }
+
+  .ticketTitle {
+    font-size: 1.8rem;
+    padding: 0;
+  }
+  
+  .addressButton {
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+}
+
+
 ::-webkit-scrollbar {
   display: none;
 }
-
-.WarningMessage {
-  text-align: center;
-  background-size: cover;
-  margin-top: 10vh;
-}
-
 
 .ticketImage {
   width: 20vh;
@@ -79,13 +99,14 @@ a:link, a:visited, a:hover, a:active {
 
 
 .mintbutton {
-  width: 15rem;
+  width: 12rem;
   margin: auto;
   background-color: #fc6666;
   border-radius: 0.5rem;
-  height: 4rem;
+  height: 3rem;
   font-size: 1.4rem;
   border-color:#fc6666;
+  margin-bottom: 2vh;
 }
 
 .mintbutton:hover, .mintbutton:active, .mintbutton:focus {
@@ -94,12 +115,10 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .addressButton {
-  width: 25rem;
   margin: auto;
+  width: 25rem;
   background-color: #ff8c44;
   border-radius: 0.5rem;
-  height: 2rem;
-  font-size: 0.8rem;
   border-color:#ff8c44;
 }
 
