@@ -8,19 +8,12 @@ module.exports = {
   solidity: "0.8.4",
   networks: {
      hardhat: {},
-     goerli: {
-       url: process.env.REACT_APP_API_URL_GOERLI,
-       accounts: ['0x' + process.env.REACT_APP_PRIVATE_KEY_GOERLI],
-       allowUnlimitedContractSize: true,
-       gas: 2100000,
-       gasPrice: 12000000000,
-     },
-     mainnet: {
-       url: process.env.REACT_APP_API_URL_MAINNET,
-       accounts: [process.env.REACT_APP_PRIVATE_KEY_MAINNET],
-       gas: 2100000,
-       gasPrice: 16000000000
-     }
+    //  mainnet: {
+    //    url: process.env.REACT_APP_API_URL_MAINNET,
+    //    accounts: [process.env.REACT_APP_PRIVATE_KEY_MAINNET],
+    //    gas: 2100000,
+    //    gasPrice: 16000000000
+    //  }
   },
   paths: {
     artifacts: "./src/backend/artifacts",
