@@ -2,48 +2,32 @@
 pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
-import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
-contract NFT is ERC721A, Ownable {
+contract NFT is Ownable, ERC721Burnable {
     string public uriPrefix = '';
     string public uriSuffix = '.json';
     uint256 public max_supply = 5000;
     uint256 public amountMintPerAccount = 1;
+    uint256 public currentToken = 0;
 
-    uint256 public price = 0 ether;
-    
     event MintSuccessful(address user);
 
-    constructor(address _teamWallet) ERC721A("FREAKY RABBIT", "FR")
+    constructor(address _teamWallet) ERC721("FREAKY RABBIT", "FR")
     { 
         transferOwnership(_teamWallet);
     }
-    
-    function _startTokenId() internal view override returns (uint256) {
-        return 1;
-    }
 
-    function mint(uint256 _quantity) external payable {
-        require(msg.value >= getPrice() * _quantity, "Not enough ETH sent; check price!");
-        require(balanceOf(msg.sender) + _quantity <= amountMintPerAccount, 'Each address may only mint x NFTs!');
+    function mint() external {
+        require(balanceOf(msg.sender) < amountMintPerAccount, 'Each address may only mint x NFTs!');
+        require(currentToken < max_supply, 'No more NFT available to mint!');
 
-        _mint(msg.sender, _quantity);
+        currentToken += 1;
+        _safeMint(msg.sender, currentToken);
         
         emit MintSuccessful(msg.sender);
-    }
-
-    function getPrice() view public returns(uint) {
-        if (msg.sender != owner()) {
-            return price;
-        }
-
-        return 0 ether; // No minting price for owner
-    }
-
-    function setPrice(uint256 _price) public onlyOwner {
-        price = _price;
     }
 
     function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
