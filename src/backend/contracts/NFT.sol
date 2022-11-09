@@ -32,15 +32,11 @@ contract NFT is Ownable, ERC721Burnable {
 
     function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
         require(_exists(_tokenId), 'ERC721Metadata: URI query for nonexistent token');
-
-        string memory currentBaseURI = _baseURI();
-        return bytes(currentBaseURI).length > 0
-            ? string(abi.encodePacked(currentBaseURI, Strings.toString(_tokenId), uriSuffix))
-            : '';
+        return _baseURI();
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmcmNkAfGTLcnnQh61DNDvxVfhNdo5f5zK1gFXeEvCnE1B/";
+        return "ipfs://QmT9np4jHGp5MUwEHWFUVAe9xB8yDxCS2EsCZqrczYXbux/";
     }
     
     function baseTokenURI() public pure returns (string memory) {

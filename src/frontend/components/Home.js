@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
-import { Row, Col, Card, Button, Form, InputGroup } from 'react-bootstrap'
-import logo from './assets/logo.png'
+import { Row, Col, Button } from 'react-bootstrap'
 import ticket from './assets/ticket0001.png'
 
 const fromWei = (num) => ethers.utils.formatEther(num)
@@ -33,16 +32,32 @@ const Home = ({ web3Handler, account, nft, ticketsLeft }) => {
                     <div className="ticketText">5,000/5,000 Tickets Remaining</div>
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    <div>1</div>
+                    {account ? (
+                        <div>1</div>
+                    ) : (
+                        <></>
+                    )}
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    <div className="ticketText">0,00 ETH</div>
+                    {account ? (
+                        <div className="ticketText">0,00 ETH</div>
+                    ) : (
+                        <></>
+                    )}
                 </Row>
                 <Row className="mx-auto mt-0">
-                    <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
+                    {account ? (
+                        <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
+                    ) : (
+                        <Button className="mintbutton" onClick={mintButton}>Connect</Button>
+                    )}
                 </Row>
                 <Row className="mx-auto mt-0 mb-4">
-                    <Button className="addressButton">0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd</Button>
+                    {account ? (
+                        <Button className="addressButton">{account}</Button>
+                    ) : (
+                        <></>
+                    )}
                 </Row>
                 <Row className="mx-auto mt-0 mb-4">
                     <div className="ticketText">1 Ticket per Wallet</div>
