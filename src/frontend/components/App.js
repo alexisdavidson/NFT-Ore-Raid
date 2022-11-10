@@ -21,6 +21,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [account, setAccount] = useState(null)
   const [isWhitelisted, setIsWhitelisted] = useState(false)
+  const [balance, setBalance] = useState(0)
   const [nft, setNFT] = useState({})
 
   // MetaMask Login/Connect
@@ -62,6 +63,7 @@ function App() {
 
     setNFT(nft)
     setIsWhitelisted(await nft.isWhitelisted(acc))
+    setBalance(await nft.balanceOf(acc))
     setLoading(false)
     
     loadOpenSeaItems(acc, NFTAddress.address)
@@ -73,7 +75,7 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={
-            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300} isWhitelisted={isWhitelisted}>
+            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300} isWhitelisted={isWhitelisted} balance={balance}>
               </Home>
           } />
         </Routes>

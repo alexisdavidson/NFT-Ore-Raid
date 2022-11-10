@@ -6,7 +6,7 @@ import ticket from './assets/ticket0001.png'
 const fromWei = (num) => ethers.utils.formatEther(num)
 const toWei = (num) => ethers.utils.parseEther(num.toString())
 
-const Home = ({ web3Handler, account, nft, ticketsLeft, isWhitelisted }) => {
+const Home = ({ web3Handler, account, nft, ticketsLeft, isWhitelisted, balance }) => {
 
     const mintButton = async () => {
         // Connect
@@ -32,14 +32,14 @@ const Home = ({ web3Handler, account, nft, ticketsLeft, isWhitelisted }) => {
                     <div className="ticketText">5,000/5,000 Tickets Remaining</div>
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    {account && isWhitelisted ? (
+                    {account && isWhitelisted && balance == 0 ? (
                         <div>1</div>
                     ) : (
                         <></>
                     )}
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    {account && isWhitelisted ? (
+                    {account && isWhitelisted && balance == 0 ? (
                         <div className="ticketText">0,00 ETH</div>
                     ) : (
                         <></>
@@ -48,7 +48,11 @@ const Home = ({ web3Handler, account, nft, ticketsLeft, isWhitelisted }) => {
                 <Row className="mx-auto mt-0">
                     {account ? (
                         isWhitelisted ? (
-                            <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
+                                balance == 0 ? (
+                                    <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
+                                ) : (
+                                    <h2 className="ticketTitle">You had minted 1 ticket</h2>
+                                )
                         ) : (
                             <div className="ticketText">You are not whitelisted.</div>
                         )
