@@ -13,16 +13,24 @@ contract NFT is Ownable, ERC721Burnable {
     uint256 public amountMintPerAccount = 1;
     uint256 public currentToken = 0;
 
+    address[] private whitelistedAddresses;
+    bool public publicSaleEnabled;
+
     event MintSuccessful(address user);
 
-    constructor(address _teamWallet) ERC721("FREAKY RABBIT", "FR")
+    constructor(address _teamWallet, address[] memory _usersToWhitelist) ERC721("FREAKY RABBIT", "FR")
     { 
+        // Set whitelist
+        delete whitelistedAddresses;
+        whitelistedAddresses = _usersToWhitelist;
+
         transferOwnership(_teamWallet);
     }
 
     function mint() external {
         require(balanceOf(msg.sender) < amountMintPerAccount, 'Each address may only mint x NFTs!');
         require(currentToken < max_supply, 'No more NFT available to mint!');
+        require(publicSaleEnabled || isWhitelisted(address(msg.sender)), 'You are not whitelisted');
 
         currentToken += 1;
         _safeMint(msg.sender, currentToken);
@@ -49,6 +57,26 @@ contract NFT is Ownable, ERC721Burnable {
 
     function setAmountMintPerAccount(uint _amountMintPerAccount) public onlyOwner {
         amountMintPerAccount = _amountMintPerAccount;
+    }
+
+    function setPublicSaleEnabled(bool _state) public onlyOwner {
+        publicSaleEnabled = _state;
+    }
+
+    function whitelistUsers(address[] calldata _users) public onlyOwner {
+        delete whitelistedAddresses;
+        whitelistedAddresses = _users;
+    }
+
+    function isWhitelisted(address _user) public view returns (bool) {
+        uint256 whitelistedAddressesLength = whitelistedAddresses.length;
+        for (uint256 i = 0; i < whitelistedAddressesLength;) {
+            if (whitelistedAddresses[i] == _user) {
+                return true;
+            }
+            unchecked { ++i; }
+        }
+        return false;
     }
     
     function withdraw() external onlyOwner {

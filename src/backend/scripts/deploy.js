@@ -1,8 +1,3 @@
-// Before deploy:
-// -Fill whitelist addresses with correct data!
-// -Team Wallet mainnet: 0x61603b8A09C2Aa8f663B43c22C9ceBeC00FC6FeC
-// -Team Wallet goerli: 0xf20fF4c449AA023B72bAAc9EF89a6DE2BBfc22e6
-
 async function main() {
   const [deployer] = await ethers.getSigners();
 
@@ -10,11 +5,11 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   // Fill with correct data and uncomment the correct network before deploy!
-  // const teamWallet = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"; // localhost
+  const teamWallet = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // localhost
+  const whitelistedAddresses = ["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"]; // localhost
   
-  const tokenAddress = "0x8D7893e2D0A4765346A5DEb55497a8015da900b7" // mainnet
   const NFT = await ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy();
+  const nft = await NFT.deploy(teamWallet, whitelistedAddresses);
   console.log("NFT contract address", nft.address)
   
   saveFrontendFiles(nft, "NFT");

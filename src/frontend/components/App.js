@@ -20,6 +20,7 @@ const toWei = (num) => ethers.utils.parseEther(num.toString())
 function App() {
   const [loading, setLoading] = useState(true)
   const [account, setAccount] = useState(null)
+  const [isWhitelisted, setIsWhitelisted] = useState(false)
   const [nft, setNFT] = useState({})
 
   // MetaMask Login/Connect
@@ -60,6 +61,7 @@ function App() {
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
 
     setNFT(nft)
+    setIsWhitelisted(await nft.isWhitelisted(acc))
     setLoading(false)
     
     loadOpenSeaItems(acc, NFTAddress.address)
@@ -71,7 +73,7 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={
-            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300}>
+            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300} isWhitelisted={isWhitelisted}>
               </Home>
           } />
         </Routes>
