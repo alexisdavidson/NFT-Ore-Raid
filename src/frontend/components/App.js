@@ -38,6 +38,21 @@ function App() {
   }
   
 
+  const listenToEvents = async (nft) => {
+    nft.on("MintSuccessful", (user) => {
+        console.log("MintSuccessful");
+        console.log(user);
+
+        mintFinished();
+    });
+  }
+
+  const mintFinished = () => {
+      console.log("mintFinished")
+      setTicketsLeft(ticketsLeft - 1)
+      setBalance(balance + 1)
+  }
+
   const fetchOpenseaStats = async () => {
     let openSeaApi = configContract.OPENSEA_API
     openSeaApi = configContract.OPENSEA_API_TESTNETS // comment this for mainnet
@@ -67,11 +82,16 @@ function App() {
     setNFT(nft)
     setIsWhitelisted(await nft.isWhitelisted(acc))
     setBalance(await nft.balanceOf(acc))
+    listenToEvents(nft)
     setLoading(false)
   }
 
   useEffect(() => {
     fetchOpenseaStats()
+
+    return () => {
+      nft?.removeAllListeners("MintSuccessful");
+    };
   }, [])
 
   return (

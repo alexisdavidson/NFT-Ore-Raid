@@ -19,25 +19,6 @@ const Home = ({ web3Handler, loading, account, nft, ticketsLeft, isWhitelisted, 
         await nft.mint()
     }
 
-    const listenToEvents = async () => {
-        nft.on("MintSuccessful", (user) => {
-            console.log("MintSuccessful");
-            console.log(user);
-
-            mintFinished();
-        });
-    }
-
-    const mintFinished = () => {
-        console.log("mintFinished")
-        ticketsLeft --
-        balance += 1
-    }
-
-    useEffect(() => {
-        listenToEvents()
-    }, [])
-
     return (
         <div className="m-0 p-0 container-fluid">
             <Row className="splashScreen my-3 p-3 container-fluid">
