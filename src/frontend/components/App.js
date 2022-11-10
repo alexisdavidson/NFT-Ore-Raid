@@ -42,7 +42,7 @@ function App() {
     let openSeaApi = configContract.OPENSEA_API
     openSeaApi = configContract.OPENSEA_API_TESTNETS // comment this for mainnet
 
-    let finalUrl = `${openSeaApi}/collection/else-exchange-ticket`
+    let finalUrl = `${openSeaApi}/collection/else-exchange-ticket-v2`
     console.log("OpenSea call for url: " + finalUrl)
 
     let collectionStats = await fetch(finalUrl)
