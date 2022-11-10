@@ -7,7 +7,7 @@ import './App.css';
 import Navigation from './Navbar';
 import Home from './Home';
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 
 import NFTAbi from '../contractsData/NFT.json'
@@ -22,6 +22,7 @@ function App() {
   const [account, setAccount] = useState(null)
   const [isWhitelisted, setIsWhitelisted] = useState(false)
   const [balance, setBalance] = useState(0)
+  const [ticketsLeft, setTicketsLeft] = useState(5000)
   const [nft, setNFT] = useState({})
 
   // MetaMask Login/Connect
@@ -37,17 +38,19 @@ function App() {
   }
   
 
-  const loadOpenSeaItems = async (acc, contractAddress) => {
+  const fetchOpenseaStats = async () => {
     let openSeaApi = configContract.OPENSEA_API
-    // openSeaApi = configContract.OPENSEA_API_TESTNETS // comment this for mainnet
-    let finalUrl = `${openSeaApi}/assets?owner=${acc}&asset_contract_address=${contractAddress}&format=json`
+    openSeaApi = configContract.OPENSEA_API_TESTNETS // comment this for mainnet
+
+    let finalUrl = `${openSeaApi}/collection/else-exchange-ticket`
     console.log("OpenSea call for url: " + finalUrl)
 
-    let items = await fetch(finalUrl)
+    let collectionStats = await fetch(finalUrl)
     .then((res) => res.json())
     .then((res) => {
-        console.log(res.assets)
-      return res.assets
+        console.log("Opensea Result:")
+        console.log(res.collection.stats)
+      return res.collection.stats
     })
     .catch((e) => {
       console.error(e)
@@ -55,7 +58,7 @@ function App() {
       return null
     })
 
-    setLoading(false)
+    setTicketsLeft(5000 - collectionStats.count)
   }
 
   const loadContracts = async (acc, signer) => {
@@ -65,9 +68,11 @@ function App() {
     setIsWhitelisted(await nft.isWhitelisted(acc))
     setBalance(await nft.balanceOf(acc))
     setLoading(false)
-    
-    loadOpenSeaItems(acc, NFTAddress.address)
   }
+
+  useEffect(() => {
+    fetchOpenseaStats()
+  }, [])
 
   return (
     <BrowserRouter>
@@ -75,7 +80,7 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={
-            <Home web3Handler={web3Handler} account={account} nft={nft} ticketsLeft={300} isWhitelisted={isWhitelisted} balance={balance}>
+            <Home web3Handler={web3Handler} loading={loading} account={account} nft={nft} ticketsLeft={ticketsLeft} isWhitelisted={isWhitelisted} balance={balance}>
               </Home>
           } />
         </Routes>
