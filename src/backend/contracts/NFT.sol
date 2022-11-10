@@ -18,7 +18,7 @@ contract NFT is Ownable, ERC721Burnable {
 
     event MintSuccessful(address user);
 
-    constructor(address _teamWallet, address[] memory _usersToWhitelist) ERC721("FREAKY RABBIT", "FR")
+    constructor(address _teamWallet, address[] memory _usersToWhitelist) ERC721("Else Exchange Ticket", "ELSET")
     { 
         // Set whitelist
         delete whitelistedAddresses;
