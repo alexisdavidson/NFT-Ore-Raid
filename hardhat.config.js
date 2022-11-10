@@ -7,7 +7,9 @@ require("dotenv").config();
 module.exports = {
   solidity: "0.8.4",
   networks: {
-     hardhat: {},
+     hardhat: {
+      chainId: 31337
+     },
      goerli: {
        url: process.env.REACT_APP_API_URL_GOERLI_INFURA,
        accounts: ['0x' + process.env.REACT_APP_PRIVATE_KEY_GOERLI],
