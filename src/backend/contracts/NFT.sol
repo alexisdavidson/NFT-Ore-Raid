@@ -44,7 +44,7 @@ contract NFT is Ownable, ERC721Burnable {
     }
 
     function contractURI() public pure returns (string memory) {
-        return "ipfs://QmSEpHurXTj4g8DKMYNhhGqnDf93yGLpibcY62AxgtEDJn/";
+        return "ipfs://QmdmSPaNFaBzVR3GSFDfmP7DG9JdahnDu1P94L5H44Y5DR/";
     }
 
     function setAmountMintPerAccount(uint _amountMintPerAccount) public onlyOwner {
