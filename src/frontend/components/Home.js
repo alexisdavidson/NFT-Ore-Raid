@@ -32,14 +32,14 @@ const Home = ({ web3Handler, loading, account, nft, ticketsLeft, isWhitelisted, 
                     <div className="ticketText">{ticketsLeft}/5000 Tickets Remaining</div>
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    {account && isWhitelisted && balance == 0 ? (
+                    {account && isWhitelisted == true && balance == 0 ? (
                         <div>1</div>
                     ) : (
                         <></>
                     )}
                 </Row>
                 <Row className="mx-auto mt-0 mb-2">
-                    {account && isWhitelisted && balance == 0 ? (
+                    {account && isWhitelisted == true && balance == 0 ? (
                         <div className="ticketText">0,00 ETH</div>
                     ) : (
                         <></>
@@ -47,7 +47,7 @@ const Home = ({ web3Handler, loading, account, nft, ticketsLeft, isWhitelisted, 
                 </Row>
                 <Row className="mx-auto mt-0">
                     {account && !loading ? (
-                        isWhitelisted ? (
+                        isWhitelisted == true ? (
                                 balance == 0 ? (
                                     <Button className="mintbutton" onClick={mintButton}>Mint Ticket</Button>
                                 ) : (
