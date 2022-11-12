@@ -17,12 +17,12 @@ module.exports = {
        gas: 2100000,
        gasPrice: 8000000000,
      },
-    //  mainnet: {
-    //    url: process.env.REACT_APP_API_URL_MAINNET,
-    //    accounts: [process.env.REACT_APP_PRIVATE_KEY_MAINNET],
-    //    gas: 2100000,
-    //    gasPrice: 16000000000
-    //  }
+     mainnet: {
+      url: process.env.REACT_APP_API_URL_MAINNET_INFURA,
+      accounts: [process.env.REACT_APP_PRIVATE_KEY_MAINNET_KENNY],
+      gas: 2100000,
+      gasPrice: 30000000000
+    }
   },
   paths: {
     artifacts: "./src/backend/artifacts",

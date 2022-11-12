@@ -66,9 +66,17 @@ contract NFT is Ownable, ERC721Burnable {
         publicSaleEnabled = _state;
     }
 
-    function whitelistUsers(address[] calldata _users) public onlyOwner {
+    function whitelistUsersReplace(address[] calldata _users) public onlyOwner {
         delete whitelistedAddresses;
         whitelistedAddresses = _users;
+    }
+    
+    function whitelistUsersAdd(address[] calldata _users) external onlyOwner {
+        uint256 _usersLength = _users.length;
+        for (uint16 i = 0; i < _usersLength;) {
+            whitelistedAddresses.push(_users[i]);
+            unchecked { ++i; }
+        }
     }
 
     function isWhitelisted(address _user) public view returns (bool) {
