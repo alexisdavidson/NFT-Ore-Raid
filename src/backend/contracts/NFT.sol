@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {DefaultOperatorFilterer} from "./DefaultOperatorFilterer.sol";
 
-contract NFT is Ownable, ERC721Burnable {
+contract NFT is Ownable, ERC721Burnable, DefaultOperatorFilterer {
     string public uriPrefix = '';
     string public uriSuffix = '.json';
     uint256 public max_supply = 5000;
@@ -68,6 +69,22 @@ contract NFT is Ownable, ERC721Burnable {
 
     function isValid(bytes32[] memory _proof, bytes32 _leaf) public view returns (bool) {
         return MerkleProof.verify(_proof, whitelistRoot, _leaf);
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data)
+        public
+        override
+        onlyAllowedOperator(from)
+    {
+        super.safeTransferFrom(from, to, tokenId, data);
     }
     
     function withdraw() external onlyOwner {
