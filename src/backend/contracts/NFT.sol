@@ -14,21 +14,12 @@ contract NFT is Ownable, ERC721Burnable {
     uint256 public currentToken = 0;
 
     bytes32 public whitelistRoot;
-    address[] private whitelistedAddresses;
     bool public publicSaleEnabled;
 
     event MintSuccessful(address user);
 
     constructor(bytes32 _whitelistRoot) ERC721("Else Exchange Ticket", "ELSET") { 
         whitelistRoot = _whitelistRoot;
-    }
-
-    function setWhitelistRoot(bytes32 _whitelistRoot) public onlyOwner {
-        whitelistRoot = _whitelistRoot;
-    }
-
-    function isValid(bytes32[] memory _proof, bytes32 _leaf) public view returns (bool) {
-        return MerkleProof.verify(_proof, whitelistRoot, _leaf);
     }
 
     function mint(bytes32[] memory _proof) external {
@@ -71,28 +62,12 @@ contract NFT is Ownable, ERC721Burnable {
         publicSaleEnabled = _state;
     }
 
-    function whitelistUsersReplace(address[] calldata _users) public onlyOwner {
-        delete whitelistedAddresses;
-        whitelistedAddresses = _users;
-    }
-    
-    function whitelistUsersAdd(address[] calldata _users) external onlyOwner {
-        uint256 _usersLength = _users.length;
-        for (uint16 i = 0; i < _usersLength;) {
-            whitelistedAddresses.push(_users[i]);
-            unchecked { ++i; }
-        }
+    function setWhitelistRoot(bytes32 _whitelistRoot) public onlyOwner {
+        whitelistRoot = _whitelistRoot;
     }
 
-    function isWhitelisted(address _user) public view returns (bool) {
-        uint256 whitelistedAddressesLength = whitelistedAddresses.length;
-        for (uint256 i = 0; i < whitelistedAddressesLength;) {
-            if (whitelistedAddresses[i] == _user) {
-                return true;
-            }
-            unchecked { ++i; }
-        }
-        return false;
+    function isValid(bytes32[] memory _proof, bytes32 _leaf) public view returns (bool) {
+        return MerkleProof.verify(_proof, whitelistRoot, _leaf);
     }
     
     function withdraw() external onlyOwner {
