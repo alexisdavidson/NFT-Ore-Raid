@@ -1,5 +1,7 @@
 // https://medium.com/@ItsCuzzo/using-merkle-trees-for-nft-whitelists-523b58ada3f9
 
+// Add "type": "module",   to package.json before executing this script
+
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 import whitelistAddresses from '../../frontend/components/whitelistAddresses.json' assert { type: "json" };
@@ -13,9 +15,11 @@ const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
 
 // 4. Get root hash of the `merkleeTree` in hexadecimal format (0x)
 // Print out the Entire Merkle Tree.
+const buf2hex = x => '0x' + x.toString('hex')
+
 const rootHash = merkleTree.getRoot();
 console.log('Whitelist Merkle Tree\n', merkleTree.toString());
-console.log("Root Hash: ", rootHash);
+console.log("Root Hash Hex: ", buf2hex(merkleTree.getRoot()));
 
 // ***** ***** ***** ***** ***** ***** ***** ***** // 
 

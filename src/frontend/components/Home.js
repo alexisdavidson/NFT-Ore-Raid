@@ -6,17 +6,17 @@ import ticket from './assets/ticket0001.png'
 const fromWei = (num) => ethers.utils.formatEther(num)
 const toWei = (num) => ethers.utils.parseEther(num.toString())
 
-const Home = ({ web3Handler, loading, account, nft, ticketsLeft, isWhitelisted, balance }) => {
+const Home = ({ web3Handler, loading, account, nft, ticketsLeft, isWhitelisted, balance, proof }) => {
 
     const mintButton = async () => {
         // Connect
         if (account == null) {
-            web3Handler();
+            await web3Handler();
             return;
         }
 
         console.log("triggerMint");
-        await nft.mint()
+        await nft.mint(proof)
     }
 
     return (

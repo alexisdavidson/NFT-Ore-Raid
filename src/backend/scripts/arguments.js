@@ -1,4 +1,4 @@
 module.exports = [
-  "0x127cd7eaAE73229413da41eb3767dce9a869eB33", [] // mainnet
-  // "0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd", ["0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd", "0x7327ccC29B7cd5f0Bdc1957c5E32BE1f6Bf31446"] // goerli
-  ];
+  // "0x127cd7eaAE73229413da41eb3767dce9a869eB33", [] // mainnet
+  "0xbc31375dd73e024b8d6b153e29ec5567ba006493bdac3e2099d4f347c3309d06" // goerli
+];

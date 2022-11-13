@@ -7,13 +7,15 @@ async function main() {
   // Fill with correct data and uncomment the correct network before deploy!
   // const teamWallet = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // localhost
   // const whitelistedAddresses = ["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"]; // localhost
-  const teamWallet = "0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd"; // goerli
-  const whitelistedAddresses = ["0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd", "0x7327ccC29B7cd5f0Bdc1957c5E32BE1f6Bf31446"]; // goerli
+  // const teamWallet = "0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd"; // goerli
+  // const whitelistedAddresses = ["0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd", "0x7327ccC29B7cd5f0Bdc1957c5E32BE1f6Bf31446"]; // goerli
   // const teamWallet = "0x127cd7eaAE73229413da41eb3767dce9a869eB33"; // mainnet
   // const whitelistedAddresses = []; // mainnet
+
+  const whitelistRoot = "0xbc31375dd73e024b8d6b153e29ec5567ba006493bdac3e2099d4f347c3309d06" // goerli
   
   const NFT = await ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy(teamWallet, whitelistedAddresses);
+  const nft = await NFT.deploy(whitelistRoot);
   console.log("NFT contract address", nft.address)
   
   saveFrontendFiles(nft, "NFT");

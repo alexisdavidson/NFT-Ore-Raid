@@ -12,7 +12,10 @@ import { ethers } from 'ethers'
 
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
-import configContract from './configContract';
+import whitelistAddresses from './whitelistAddresses';
+import { MerkleTree } from 'merkletreejs';
+import keccak256 from 'keccak256';
+window.Buffer = window.Buffer || require("buffer").Buffer; 
 
 const fromWei = (num) => ethers.utils.formatEther(num)
 const toWei = (num) => ethers.utils.parseEther(num.toString())
@@ -24,10 +27,33 @@ function App() {
   const [balance, setBalance] = useState(0)
   const [ticketsLeft, setTicketsLeft] = useState(5000)
   const [nft, setNFT] = useState({})
+  const [proof, setProof] = useState([])
+
+  const getIsWhitelisted = async(acc) => {
+    console.log("getIsWhitelisted")
+    console.log("whitelistAddresses:")
+    console.log(whitelistAddresses)
+    
+    const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+    const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+    // const buf2hex = x => '0x' + x.toString('hex')
+    // const rootHash = merkleTree.getRoot();
+    const hexProof = merkleTree.getHexProof(acc);
+
+    console.log("hexProof: ")
+    console.log(hexProof);
+    console.log("keccak256(acc): ")
+    console.log(keccak256(acc))
+    const isValid = await nft.isValid(hexProof, keccak256(acc));
+    console.log("isValid: " + isValid)
+
+    setIsWhitelisted(isValid)
+    setProof(hexProof)
+  }
 
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    setIsWhitelisted(await nft.isWhitelisted(accounts[0]))
+    setIsWhitelisted(await getIsWhitelisted(accounts[0]))
     setBalance(await nft.balanceOf(accounts[0]))
     setAccount(accounts[0])
   }
@@ -74,7 +100,9 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={
-            <Home web3Handler={web3Handler} loading={loading} account={account} nft={nft} ticketsLeft={ticketsLeft} isWhitelisted={isWhitelisted} balance={balance}>
+            <Home web3Handler={web3Handler} loading={loading} account={account} nft={nft} 
+              ticketsLeft={ticketsLeft} isWhitelisted={isWhitelisted} balance={balance}
+              proof={proof}>
               </Home>
           } />
         </Routes>
