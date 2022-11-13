@@ -1,14 +1,8 @@
 // https://medium.com/@ItsCuzzo/using-merkle-trees-for-nft-whitelists-523b58ada3f9
-//
-// 1. Import libraries. Use `npm` package manager to install
-const { MerkleTree } = require('merkletreejs');
-const keccak256 = require('keccak256');
 
-// 2. Collect list of wallet addresses from competition, raffle, etc.
-// Store list of addresses in some data sheeet (Google Sheets or Excel)
-let whitelistAddresses = [
-    "0xD71E736a7eF7a9564528D41c5c656c46c18a2AEd", "0x7327ccC29B7cd5f0Bdc1957c5E32BE1f6Bf31446"
-  ];
+import { MerkleTree } from 'merkletreejs';
+import keccak256 from 'keccak256';
+import whitelistAddresses from '../../frontend/components/whitelistAddresses.json' assert { type: "json" };
 
 // 3. Create a new array of `leafNodes` by hashing all indexes of the `whitelistAddresses`
 // using `keccak256`. Then creates a Merkle Tree object using keccak256 as the algorithm.
@@ -29,9 +23,9 @@ console.log("Root Hash: ", rootHash);
 // required to derive the root hash of the Merkle Tree
 
 // ✅ Positive verification of address
-let claimingAddress = leafNodes[1];
+let claimingAddress = leafNodes[0];
 // ❌ Change this address to get a `false` verification
-// claimingAddress = keccak256("0X5B38DA6A701C568545DCFCB03FCB875F56BEDDD6");
+// claimingAddress = keccak256("0xD71E736a7eF7a9564528D41c5c656c46c18a2AEb");
 
 // `getHexProof` returns the neighbour leaf and all parent nodes hashes that will
 // be required to derive the Merkle Trees root hash.
