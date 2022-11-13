@@ -29,8 +29,16 @@ function App() {
   const [nft, setNFT] = useState({})
   const [proof, setProof] = useState([])
 
-  const getIsWhitelisted = async(acc) => {
+  const getIsWhitelisted = async(acc, nft) => {
     console.log("getIsWhitelisted")
+    
+    const isPublicSale = await nft.publicSaleEnabled()
+    if (isPublicSale) {
+      console.log("public sale is enabled")
+      setIsWhitelisted(true)
+      return
+    }
+
     console.log("whitelistAddresses:")
     console.log(whitelistAddresses)
     
@@ -52,7 +60,7 @@ function App() {
 
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    await getIsWhitelisted(accounts[0])
+    await getIsWhitelisted(accounts[0], nft)
     setBalance(await nft.balanceOf(accounts[0]))
     setAccount(accounts[0])
   }
