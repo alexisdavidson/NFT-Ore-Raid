@@ -13,7 +13,7 @@ async function main() {
   // const whitelistedAddresses = []; // mainnet
 
   const whitelistRoot = "0xbc31375dd73e024b8d6b153e29ec5567ba006493bdac3e2099d4f347c3309d06" // goerli
-  // const whitelistRoot = "" // mainnet
+  // const whitelistRoot = "0x1d9d0419c95e69de3ab2041036bfd85e93520ff5fa069f7b7d990ee826542c12" // mainnet
   
   const NFT = await ethers.getContractFactory("NFT");
   const nft = await NFT.deploy(whitelistRoot);
