@@ -18,7 +18,7 @@ contract NFT is Ownable, ERC721Burnable {
 
     event MintSuccessful(address user);
 
-    constructor(bytes32 _whitelistRoot) ERC721("Else Exchange Ticket", "ELSET") { 
+    constructor(bytes32 _whitelistRoot) ERC721("Ore Raid - Else Exchange Ticket", "ELSET") { 
         whitelistRoot = _whitelistRoot;
     }
 

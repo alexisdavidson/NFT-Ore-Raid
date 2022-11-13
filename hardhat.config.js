@@ -31,7 +31,7 @@ module.exports = {
     tests: "./src/backend/test"
   },
   etherscan: {
-    apiKey: process.env.REACT_APP_ETHERSCAN_API_KEY
+    apiKey: process.env.REACT_APP_ETHERSCAN_API_KEY_KENNY
     // apiKey: process.env.REACT_APP_POLYGONSCAN_API_KEY
   }
 };
