@@ -25,18 +25,12 @@ function App() {
   const [ticketsLeft, setTicketsLeft] = useState(5000)
   const [nft, setNFT] = useState({})
 
-  // MetaMask Login/Connect
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setIsWhitelisted(await nft.isWhitelisted(accounts[0]))
+    setBalance(await nft.balanceOf(accounts[0]))
     setAccount(accounts[0])
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-
-    const signer = provider.getSigner()
-
-    loadContracts(accounts[0], signer)
   }
-  
 
   const listenToEvents = async (nft) => {
     nft.on("MintSuccessful", (user) => {
@@ -53,41 +47,21 @@ function App() {
       setBalance(balance + 1)
   }
 
-  const fetchOpenseaStats = async () => {
-    let openSeaApi = configContract.OPENSEA_API
-    openSeaApi = configContract.OPENSEA_API_TESTNETS // comment this for mainnet
+  const loadContracts = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
 
-    let finalUrl = `${openSeaApi}/collection/else-exchange-ticket-v2`
-    console.log("OpenSea call for url: " + finalUrl)
-
-    let collectionStats = await fetch(finalUrl)
-    .then((res) => res.json())
-    .then((res) => {
-        console.log("Opensea Result:")
-        console.log(res.collection.stats)
-      return res.collection.stats
-    })
-    .catch((e) => {
-      console.error(e)
-      console.error('Could not talk to OpenSea')
-      return null
-    })
-
-    setTicketsLeft(5000 - collectionStats.count)
-  }
-
-  const loadContracts = async (acc, signer) => {
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
-
-    setNFT(nft)
-    setIsWhitelisted(await nft.isWhitelisted(acc))
-    setBalance(await nft.balanceOf(acc))
+    const ticketsLeftTemp = 5000 - await nft.currentToken()
+    console.log("tickets left: " + ticketsLeftTemp)
+    setTicketsLeft(ticketsLeftTemp)
     listenToEvents(nft)
+    setNFT(nft)
     setLoading(false)
   }
 
   useEffect(() => {
-    fetchOpenseaStats()
+    loadContracts()
 
     return () => {
       nft?.removeAllListeners("MintSuccessful");
