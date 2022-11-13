@@ -34,17 +34,16 @@ function App() {
     console.log("whitelistAddresses:")
     console.log(whitelistAddresses)
     
+    const accHashed = keccak256(acc)
     const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
     const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
-    // const buf2hex = x => '0x' + x.toString('hex')
-    // const rootHash = merkleTree.getRoot();
-    const hexProof = merkleTree.getHexProof(acc);
+    const hexProof = merkleTree.getHexProof(accHashed);
 
     console.log("hexProof: ")
     console.log(hexProof);
     console.log("keccak256(acc): ")
     console.log(keccak256(acc))
-    const isValid = await nft.isValid(hexProof, keccak256(acc));
+    const isValid = await nft.isValid(hexProof, accHashed);
     console.log("isValid: " + isValid)
 
     setIsWhitelisted(isValid)
@@ -53,7 +52,7 @@ function App() {
 
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    setIsWhitelisted(await getIsWhitelisted(accounts[0]))
+    await getIsWhitelisted(accounts[0])
     setBalance(await nft.balanceOf(accounts[0]))
     setAccount(accounts[0])
   }
