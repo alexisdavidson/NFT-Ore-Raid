@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract NFT is Ownable, ERC721Burnable {
     string public uriPrefix = '';
@@ -12,24 +13,28 @@ contract NFT is Ownable, ERC721Burnable {
     uint256 public amountMintPerAccount = 1;
     uint256 public currentToken = 0;
 
+    bytes32 public whitelistRoot;
     address[] private whitelistedAddresses;
     bool public publicSaleEnabled;
 
     event MintSuccessful(address user);
 
-    constructor(address _teamWallet, address[] memory _usersToWhitelist) ERC721("Else Exchange Ticket", "ELSET")
-    { 
-        // Set whitelist
-        delete whitelistedAddresses;
-        whitelistedAddresses = _usersToWhitelist;
-
-        transferOwnership(_teamWallet);
+    constructor(bytes32 _whitelistRoot) ERC721("Else Exchange Ticket", "ELSET") { 
+        whitelistRoot = _whitelistRoot;
     }
 
-    function mint() external {
+    function setWhitelistRoot(bytes32 _whitelistRoot) public onlyOwner {
+        whitelistRoot = _whitelistRoot;
+    }
+
+    function isValid(bytes32[] memory _proof, bytes32 _leaf) public view returns (bool) {
+        return MerkleProof.verify(_proof, whitelistRoot, _leaf);
+    }
+
+    function mint(bytes32[] memory _proof) external {
         require(balanceOf(msg.sender) < amountMintPerAccount, 'Each address may only mint x NFTs!');
         require(currentToken < max_supply, 'No more NFT available to mint!');
-        require(publicSaleEnabled || isWhitelisted(address(msg.sender)), 'You are not whitelisted');
+        require(publicSaleEnabled || isValid(_proof, keccak256(abi.encodePacked(msg.sender))), 'You are not whitelisted');
 
         currentToken += 1;
         _safeMint(msg.sender, currentToken);
